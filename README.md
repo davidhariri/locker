@@ -1,4 +1,7 @@
 # Locker
+
+![](https://circleci.com/gh/davidhariri/locker.svg?style=shield)
+
 Locker makes data persistence in any browser-based JavaScript application efficient and easy. This means that you don't need to worry about testing for `localStorage` or private browsing mode. Different browsers handle these things differently, so Locker is essentially a wrapper on the `window` that figures out if it's contents should be persisted or not based on if the user is in private browsing mode and/or if the user has `localStorage` support in their browser.
 
 Want to see something added or have an issue? Put it in the issues and i'll get on it!

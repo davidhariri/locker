@@ -1,0 +1,29 @@
+{
+  "name": "locker.js",
+  "version": "3.0.0",
+  "description": "Simple and efficient local storage in the browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "compile": "./node_modules/.bin/babel ./source/locker.js --out-file ./build/locker.js",
+    "minify": "./node_modules/.bin/uglifyjs ./build/locker.js -o ./build/locker.min.js",
+    "build": "npm run compile && npm run minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidhariri/locker.git"
+  },
+  "author": "David Hariri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davidhariri/locker/issues"
+  },
+  "homepage": "https://github.com/davidhariri/locker#readme",
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-preset-es2015": "^6.13.2",
+    "mocha": "^3.0.2",
+    "rewire": "^2.5.2",
+    "uglify-js": "^2.7.0"
+  }
+}

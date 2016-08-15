@@ -22,7 +22,7 @@ Alternatively, you could just include `./build/locker.min.js` in your project or
 First, let's make a new instance of Locker
 
 ```js
-const myAppStorage = Locker();
+const myAppStorage = new Locker();
 ```
 
 ### Store

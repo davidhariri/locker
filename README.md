@@ -13,7 +13,7 @@ If you want, you can use npm to install Locker:
 npm install locker.js --save
 ```
 
-Alternatively, you could just include `./build/locker.min.js` in your project or use [npmcdn](https://npmcdn.com/locker.js@1.0.0/).
+Alternatively, you could just include `./build/locker.min.js` in your project or use [unpkg](https://unpkg.com/locker.js@1.0.0/).
 
 ## Methods
 

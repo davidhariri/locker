@@ -49,7 +49,7 @@ class Locker {
             try {
                 item = JSON.parse(item);
             } catch (e) {
-                console.log(`Attempt to parse JSON failed: ${e}`);
+                console.warn(`Attempt to parse JSON failed: ${e}`);
                 return null;
             }
         }

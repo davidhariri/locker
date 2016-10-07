@@ -26,14 +26,15 @@ var Locker = function () {
         key: 'store',
         value: function store(key, value) {
             if (typeof key !== 'string') {
-                throw 'key should be of type string';
+                console.warn('Key should be of type string');
+                return false;
             }
 
             try {
                 value = JSON.stringify(value);
             } catch (e) {
-                console.warn('Attempt to stringify JSON failed:');
-                throw e;
+                console.warn('Attempt to stringify JSON failed: ' + e);
+                return false;
             }
 
             if (this.usingLocalStorage) {
@@ -59,8 +60,8 @@ var Locker = function () {
                 try {
                     item = JSON.parse(item);
                 } catch (e) {
-                    console.log('Attempt to parse JSON failed:');
-                    throw e;
+                    console.warn('Attempt to parse JSON failed: ' + e);
+                    return null;
                 }
             }
 

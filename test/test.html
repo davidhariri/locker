@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Locker Test</title>
+		<script src="https://gist.githubusercontent.com/davidhariri/8a6d060bf5871da1bcf91293d4dcc197/raw/d5034cd21e70d8238e0b33197daa16e1969afe92/locker.test.js"></script>
+		<meta charset="UTF-8">
+	</head>
+	<body style="background-color: pink;">
+		<h1 style="font-size:64pt;" id="result">✘</h1>
+	</body>
+	<script>
+		// Tests that Locker works in browser contexts
+		try {
+			var locker = new Locker();
+			locker.store('test', 'test');
+			locker.retrieve('test');
+			locker.destroy('test');
+			locker.empty();
+			document.getElementById('result').innerHTML = '✔';
+		} catch(e) {
+			document.getElementById('result').innerHTML = '✘';
+			console.warn(e);
+		}
+	</script>
+</html>

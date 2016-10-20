@@ -11,14 +11,16 @@ var Locker = function () {
         this.items = {};
         this.usingLocalStorage = false;
 
-        if (typeof window !== 'undefined' && window.localStorage) {
-            try {
+        try {
+            if (typeof window !== 'undefined' && window.localStorage) {
+                // Potential fail point if in sandbox iframe
                 localStorage.setItem('__LOCKER_TEST_IGNORE', true);
-                localStorage.removeItem('__LOCKER_TEST_IGNORE');
+                localStorage.removeItem('__LOCKER_TEST_IGNORE'); // Potential fail point if in private browsing mode in Safari
                 this.usingLocalStorage = true;
-            } catch (e) {
-                console.warn('window.localStorage is not available. Locker will use it\'s own in-memory storage. Use \'Locker.items\' to view items.');
             }
+        } catch (e) {
+            // This will fail when Locker is being run inside a sandbox iframe
+            console.warn('window.localStorage is not available. Locker will use it\'s own in-memory storage. Use \'Locker.items\' to view items.');
         }
     }
 

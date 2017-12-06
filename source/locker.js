@@ -1,4 +1,4 @@
-class Locker {
+export default class Locker {
   constructor(session = false) {
     this.items = {};
     this.usingLocalStorage = false;
@@ -82,5 +82,3 @@ class Locker {
     return true;
   }
 }
-
-module.exports = Locker;

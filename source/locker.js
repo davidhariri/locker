@@ -23,6 +23,10 @@ class Locker {
         }
     }
 
+    __getStorageAPI() {
+        return window[`${this.storageType}Storage`];
+    }
+
     store(key, value) {
         if(typeof key !== 'string') {
             console.warn('Key should be of type string');
@@ -37,7 +41,7 @@ class Locker {
         }
 
         if(this.usingStorage) {
-            window[`${this.storageType}Storage`].setItem(key, value);
+            this.__getStorageAPI().setItem(key, value);
         } else {
             this.items[key] = value;
         }
@@ -49,7 +53,7 @@ class Locker {
         let item = null;
 
         if(this.usingStorage) {
-            item = window[`${this.storageType}Storage`].getItem(key);
+            item = this.__getStorageAPI().getItem(key);
         } else {
             item = this.items[key];
         }
@@ -68,7 +72,7 @@ class Locker {
 
     destroy(key) {
         if(this.usingStorage) {
-            window[`${this.storageType}Storage`].removeItem(key);
+            this.__getStorageAPI().removeItem(key);
         } else {
             delete this.items[key];
         }
@@ -78,7 +82,7 @@ class Locker {
 
     empty() {
         if (this.usingStorage) {
-            window[`${this.storageType}Storage`].clear();
+            this.__getStorageAPI().clear();
         } else {
             this.items = {};
         }

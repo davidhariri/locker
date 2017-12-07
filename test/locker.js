@@ -4,12 +4,6 @@ const Locker = require('../source/locker.js');
 const locker = new Locker();
 
 describe('Locker', () => {
-    describe('#imports', () => {
-        it('should be importable using es6 import syntax', () => {
-            assert.equal(false, true);
-        });
-    });
-
     describe('#constructor()', () => {
         it('init with no localStorage support', () => {
             assert.equal(false, locker.usingStorage);

@@ -1,6 +1,6 @@
 {
   "name": "locker.js",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "Simple and efficient local storage in the browser",
   "main": "index.js",
   "scripts": {

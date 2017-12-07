@@ -1,18 +1,30 @@
 class Locker {
-    constructor() {
+    constructor(storageType='local') {
+        const storageTypes = ['local', 'session'];
+
         this.items = {};
-        this.usingLocalStorage = false;
+        this.usingStorage = false;
+        this.storageType = storageType;
+
+        if(!storageTypes.includes(this.storageType)) {
+            console.warn(`'${this.storageType}' is not a valid storage type. Falling back to localStorage.`);
+            storageType = 'local';
+        }
 
         try {
-            if(typeof window !== 'undefined' && window.localStorage) { // Potential fail point if in sandbox iframe
-                localStorage.setItem('__LOCKER_TEST_IGNORE', true);
-                localStorage.removeItem('__LOCKER_TEST_IGNORE'); // Potential fail point if in private browsing mode in Safari
-                this.usingLocalStorage = true;
+            if(typeof window !== 'undefined' && window.localStorage && window.sessionStorage) { // Potential fail point if in sandbox iframe
+                window[`${this.storageType}Storage`].setItem('__LOCKER_TEST_IGNORE', true);
+                window[`${this.storageType}Storage`].removeItem('__LOCKER_TEST_IGNORE'); // Potential fail point if in private browsing mode in Safari
+                this.usingStorage = true;
             }
         } catch (e) {
             // This will fail when Locker is being run inside a sandbox iframe
-            console.warn('window.localStorage is not available. Locker will use it\'s own in-memory storage. Use \'Locker.items\' to view items.')
+            console.warn('Storage API is not available. Locker will use it\'s own in-memory storage. Use \'Locker.items\' to view items.')
         }
+    }
+
+    __getStorageAPI() {
+        return window[`${this.storageType}Storage`];
     }
 
     store(key, value) {
@@ -28,8 +40,8 @@ class Locker {
             return false;
         }
 
-        if(this.usingLocalStorage) {
-            localStorage.setItem(key, value);
+        if(this.usingStorage) {
+            this.__getStorageAPI().setItem(key, value);
         } else {
             this.items[key] = value;
         }
@@ -40,8 +52,8 @@ class Locker {
     retrieve(key) {
         let item = null;
 
-        if(this.usingLocalStorage) {
-            item = localStorage.getItem(key);
+        if(this.usingStorage) {
+            item = this.__getStorageAPI().getItem(key);
         } else {
             item = this.items[key];
         }
@@ -59,8 +71,8 @@ class Locker {
     }
 
     destroy(key) {
-        if(this.usingLocalStorage) {
-            localStorage.removeItem(key);
+        if(this.usingStorage) {
+            this.__getStorageAPI().removeItem(key);
         } else {
             delete this.items[key];
         }
@@ -69,8 +81,8 @@ class Locker {
     }
 
     empty() {
-        if (this.usingLocalStorage) {
-            localStorage.clear();
+        if (this.usingStorage) {
+            this.__getStorageAPI().clear();
         } else {
             this.items = {};
         }
@@ -78,3 +90,5 @@ class Locker {
         return true;
     }
 }
+
+try { module.exports = Locker; } catch(e) {};

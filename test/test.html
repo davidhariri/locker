@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Locker Test</title>
-		<script src="https://gist.githubusercontent.com/davidhariri/8a6d060bf5871da1bcf91293d4dcc197/raw/d5034cd21e70d8238e0b33197daa16e1969afe92/locker.test.js"></script>
+		<script src="../build/locker.js"></script>
 		<meta charset="UTF-8">
 	</head>
 	<body style="background-color: pink;">
@@ -16,6 +16,21 @@
 			locker.retrieve('test');
 			locker.destroy('test');
 			locker.empty();
+			locker.store('local test', 'Hello World! 👋');
+			document.getElementById('result').innerHTML = '✔';
+		} catch(e) {
+			document.getElementById('result').innerHTML = '✘';
+			console.warn(e);
+		}
+
+		// Try out session storage
+		try {
+			var locker = new Locker('session');
+			locker.store('test', 'test');
+			locker.retrieve('test');
+			locker.destroy('test');
+			locker.empty();
+			locker.store('session test', 'Hello World! 👋');
 			document.getElementById('result').innerHTML = '✔';
 		} catch(e) {
 			document.getElementById('result').innerHTML = '✘';

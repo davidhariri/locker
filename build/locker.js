@@ -6,25 +6,40 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Locker = function () {
     function Locker() {
+        var storageType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'local';
+
         _classCallCheck(this, Locker);
 
+        var storageTypes = ['local', 'session'];
+
         this.items = {};
-        this.usingLocalStorage = false;
+        this.usingStorage = false;
+        this.storageType = storageType;
+
+        if (!storageTypes.includes(this.storageType)) {
+            console.warn('\'' + this.storageType + '\' is not a valid storage type. Falling back to localStorage.');
+            storageType = 'local';
+        }
 
         try {
-            if (typeof window !== 'undefined' && window.localStorage) {
+            if (typeof window !== 'undefined' && window.localStorage && window.sessionStorage) {
                 // Potential fail point if in sandbox iframe
-                localStorage.setItem('__LOCKER_TEST_IGNORE', true);
-                localStorage.removeItem('__LOCKER_TEST_IGNORE'); // Potential fail point if in private browsing mode in Safari
-                this.usingLocalStorage = true;
+                window[this.storageType + 'Storage'].setItem('__LOCKER_TEST_IGNORE', true);
+                window[this.storageType + 'Storage'].removeItem('__LOCKER_TEST_IGNORE'); // Potential fail point if in private browsing mode in Safari
+                this.usingStorage = true;
             }
         } catch (e) {
             // This will fail when Locker is being run inside a sandbox iframe
-            console.warn('window.localStorage is not available. Locker will use it\'s own in-memory storage. Use \'Locker.items\' to view items.');
+            console.warn('Storage API is not available. Locker will use it\'s own in-memory storage. Use \'Locker.items\' to view items.');
         }
     }
 
     _createClass(Locker, [{
+        key: '__getStorageAPI',
+        value: function __getStorageAPI() {
+            return window[this.storageType + 'Storage'];
+        }
+    }, {
         key: 'store',
         value: function store(key, value) {
             if (typeof key !== 'string') {
@@ -39,8 +54,8 @@ var Locker = function () {
                 return false;
             }
 
-            if (this.usingLocalStorage) {
-                localStorage.setItem(key, value);
+            if (this.usingStorage) {
+                this.__getStorageAPI().setItem(key, value);
             } else {
                 this.items[key] = value;
             }
@@ -52,8 +67,8 @@ var Locker = function () {
         value: function retrieve(key) {
             var item = null;
 
-            if (this.usingLocalStorage) {
-                item = localStorage.getItem(key);
+            if (this.usingStorage) {
+                item = this.__getStorageAPI().getItem(key);
             } else {
                 item = this.items[key];
             }
@@ -72,8 +87,8 @@ var Locker = function () {
     }, {
         key: 'destroy',
         value: function destroy(key) {
-            if (this.usingLocalStorage) {
-                localStorage.removeItem(key);
+            if (this.usingStorage) {
+                this.__getStorageAPI().removeItem(key);
             } else {
                 delete this.items[key];
             }
@@ -83,8 +98,8 @@ var Locker = function () {
     }, {
         key: 'empty',
         value: function empty() {
-            if (this.usingLocalStorage) {
-                localStorage.clear();
+            if (this.usingStorage) {
+                this.__getStorageAPI().clear();
             } else {
                 this.items = {};
             }
@@ -95,3 +110,7 @@ var Locker = function () {
 
     return Locker;
 }();
+
+try {
+    module.exports = Locker;
+} catch (e) {};

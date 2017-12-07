@@ -91,4 +91,4 @@ class Locker {
     }
 }
 
-module.exports = Locker;
+try { module.exports = Locker; } catch(e) {};

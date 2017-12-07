@@ -1,7 +1,6 @@
-const rewire = require('rewire');
 const assert = require('assert');
 const Locker = require('../source/locker.js');
-console.log(Locker);
+
 const locker = new Locker();
 
 describe('Locker', () => {

@@ -87,5 +87,4 @@ class Locker {
     }
 }
 
-// export singleton only, not class Locker
 module.exports = Locker;

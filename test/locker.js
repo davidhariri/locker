@@ -1,89 +1,97 @@
 const rewire = require('rewire');
 const assert = require('assert');
-const locker = rewire('../source/locker.js');
-const Locker = locker.__get__('Locker');
-const storage = new Locker();
+const Locker = require('../source/locker.js');
+console.log(Locker);
+const locker = new Locker();
 
 describe('Locker', () => {
     describe('#constructor()', () => {
         it('init with no localStorage support', () => {
-            assert.equal(false, storage.usingLocalStorage);
+            assert.equal(false, locker.usingStorage);
+        });
+
+        it('defaults to localStorage', () => {
+            assert.equal('local', locker.storageType);
+        });
+
+        it('defaults to localStorage', () => {
+            assert.equal('local', locker.storageType);
         });
     });
 
     describe('#store()', () => {
         it('store a number', () => {
-            assert.equal(true, storage.store('num', 66.6));
+            assert.equal(true, locker.store('num', 66.6));
         });
 
         it('store a string', () => {
-            assert.equal(true, storage.store('str', 'hello world'));
+            assert.equal(true, locker.store('str', 'hello world'));
         });
 
         it('store a boolean', () => {
-            assert.equal(true, storage.store('bool', false));
+            assert.equal(true, locker.store('bool', false));
         });
 
         it('store a dict', () => {
-            assert.equal(true, storage.store('dict', {foo : 'bar'}));
+            assert.equal(true, locker.store('dict', {foo : 'bar'}));
         });
 
         it('store a list', () => {
-            assert.equal(true, storage.store('list', ['hi']));
+            assert.equal(true, locker.store('list', ['hi']));
         });
     });
 
     describe('#items', () => {
         it('length of items is accurate', () => {
-            assert.equal(5, Object.keys(storage.items).length);
+            assert.equal(5, Object.keys(locker.items).length);
         });
     });
 
     describe('#retrieve()', () => {
         it('retrieve a number', () => {
-            assert.equal(66.6, storage.retrieve('num'));
+            assert.equal(66.6, locker.retrieve('num'));
         });
 
         it('retrieve a string', () => {
-            assert.equal('hello world', storage.retrieve('str'));
+            assert.equal('hello world', locker.retrieve('str'));
         });
 
         it('retrieve a bool', () => {
-            assert.equal(false, storage.retrieve('bool'));
+            assert.equal(false, locker.retrieve('bool'));
         });
 
         it('retrieve a dict', () => {
-            assert.equal('bar', storage.retrieve('dict').foo);
+            assert.equal('bar', locker.retrieve('dict').foo);
         });
 
         it('retrieve a list', () => {
-            assert.equal('hi', storage.retrieve('list')[0]);
+            assert.equal('hi', locker.retrieve('list')[0]);
         });
     });
 
     describe('#destroy()', () => {
         it('destroy an item', () => {
-            assert.equal(true, storage.destroy('num'));
-            assert.equal(null, storage.retrieve('num'));
+            assert.equal(true, locker.destroy('num'));
+            assert.equal(null, locker.retrieve('num'));
         });
     });
 
     describe('#items', () => {
         it('length of items is accurate', () => {
-            assert.equal(4, Object.keys(storage.items).length);
+            assert.equal(4, Object.keys(locker.items).length);
         });
     });
 
     describe('#empty()', () => {
         it('destroy all items', () => {
-            assert.equal(true, storage.empty());
-            assert.equal(null, storage.retrieve('dict'));
+            assert.equal(true, locker.empty());
+            assert.equal(null, locker.retrieve('dict'));
         });
     });
 
     describe('#items', () => {
         it('length of items is accurate', () => {
-            assert.equal(0, Object.keys(storage.items).length);
+            assert.equal(0, Object.keys(locker.items).length);
         });
     });
 });

@@ -86,3 +86,6 @@ class Locker {
         return true;
     }
 }
+
+// export singleton only, not class Locker
+module.exports = Locker;

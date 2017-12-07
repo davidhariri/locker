@@ -2,7 +2,7 @@
 
 ![](https://circleci.com/gh/davidhariri/locker.svg?style=shield)
 
-Locker makes data persistence in any browser-based JavaScript application efficient and easy. This means that you don't need to worry about testing for `localStorage` or private browsing mode. Different browsers handle these things differently, so Locker is essentially a wrapper on the `window` that figures out if it's contents should be persisted or not based on if the user is in private browsing mode and/or if the user has `localStorage` support in their browser.
+Locker makes data persistence in any browser-based JavaScript application efficient and easy. This means that you don't need to worry about testing for `localStorage`, `sessionStorage` or private browsing mode. Different browsers handle these things differently, so Locker is essentially a fault-tolerant wrapper on the `Window` that figures out if it's contents should be persisted or not based on if the user is in private browsing mode and/or if the user has `Storage` support in their browser.
 
 Want to see something added or have an issue? Put it in the issues and i'll get on it!
 
@@ -13,7 +13,13 @@ If you want, you can use npm to install Locker:
 npm install locker.js --save
 ```
 
-Alternatively, you could just include `./build/locker.min.js` in your project or use [unpkg](https://unpkg.com/locker.js@7.0.0/build/locker.min.js).
+and `require` it as usual
+
+```js
+const Locker = require('../source/locker.js');
+```
+
+Alternatively, you could just include `/build/locker.min.js` in your project or use the latest version from NPM on [unpkg](https://unpkg.com/locker.js/build/locker.min.js) in your `<head>` and use the class `Locker` directly.
 
 ## Methods
 
@@ -23,6 +29,12 @@ First, let's make a new instance of Locker
 
 ```js
 const myAppStorage = new Locker();
+```
+
+This will attempty to use `window.localStorage`, but if it's not there, it will fall back to it's own internal storage. To target `window.sessionStorage` look at this example:
+
+```js
+const myAppStorage = new Locker('session');
 ```
 
 ### Store

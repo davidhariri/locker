@@ -13,14 +13,10 @@ If you want, you can use npm to install Locker:
 npm install locker.js --save
 ```
 
-and `require` it or `import` is as usual
+and `require` it is as usual
 
 ```js
-// CommonJS
 const Locker = require('../source/locker.js');
-
-// ES6
-import * from 'locker.js'
 ```
 
 Alternatively, you could just include `/build/locker.min.js` in your project or use the latest version from NPM on [unpkg](https://unpkg.com/locker.js/build/locker.min.js) in your `<head>` and use the class `Locker` directly.
